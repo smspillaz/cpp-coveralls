@@ -79,6 +79,7 @@ def is_excluded_path(args, filepath):
     # Try regular expressions first.
     for regexp_exclude_path in args.regexp:
         if re.match(regexp_exclude_path, filepath):
+	    print(filepath + " should be excluded")
             return True
     abspath = os.path.abspath(filepath)
     for excluded_path in excl_paths:
@@ -228,7 +229,8 @@ def collect(args):
         for filename in files:
             if not is_source_file(args, filename):
                 continue
-            abs_filepath = os.path.join(abs_root, filename)
+            abs_filepath = os.path.join(os.path.abspath(root), filename)
+            print("checking " + abs_filepath)
             if is_excluded_path(args, abs_filepath):
                 continue
             filepath = os.path.relpath(abs_filepath, abs_root)
